@@ -1,0 +1,44 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fragment.MapFragment"
+    >
+
+    <group
+        android:layout_width="600dp"
+        android:layout_height="300dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/blue"
+        android:checkableBehavior="all"
+        android:textColor="@color/blue"
+        style="@style/AppTheme.PopupOverlay"
+        >
+        <item
+            android:id="@+id/弥勒2016年烟田"
+            android:background="@color/blue"
+            android:title="@string/弥勒2016年烟田"
+            app:showAsAction="never"
+            />
+        <item
+            android:id="@+id/耕地"
+            android:textColor="@color/blue"
+            android:title="@string/耕地"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/土壤类型"
+            android:title="@string/土壤类型"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/乡镇"
+            android:title="@string/乡镇"
+            app:showAsAction="never" />
+
+
+    </group>
+
+</menu>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+##按下的效果            <item android:state_pressed="true"><shape>
+            <gradient android:angle="270" android:endColor="#ffffff" android:startColor="#222222" />
+##渐变                                     <stroke android:width="1dp" android:color="#FFFFBC" />
+##阴影                                    <corners android:radius="12dp" />
+##圆角                                     <padding android:bottom="0dp" android:left="5dp" android:right="5dp" android:top="0dp" />
+##外边距</shape></item>
+	##获得焦点            <item android:state_focused="true"><shape>
+            <gradient android:angle="270" android:endColor="#CCFFCC" android:startColor="#ffffff" />
+
+            <stroke android:width="1dp" android:color="#FFECEC" />
+
+            <corners android:radius="12dp" />
+
+            <padding android:bottom="0dp" android:left="5dp" android:right="5dp" android:top="0dp" />
+        </shape></item>
+	##原样            <item><shape>
+            <gradient android:angle="270" android:endColor="#222222" android:startColor="#ffffff" />
+
+            <stroke android:width="1dp" android:color="#888888" />
+
+            <corners android:radius="3dp" />
+
+            <padding android:bottom="0dp" android:left="5dp" android:right="5dp" android:top="0dp" />
+        </shape></item>
+
+</selector>

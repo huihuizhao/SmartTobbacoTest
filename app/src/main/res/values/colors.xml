@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#aaaaaa</color>
+    <color name="light_blue">#663399CC</color>
+    <color name="grey_bg">#f9f7f7</color>
+    <!-- 淺灰色 -->
+
+    <color name="bilibg">#f2f2f2</color>
+    <color name="black_alpha">#75000000</color>
+    <color name="black_alpha2">#23000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="mediacontroller_bg_pressed">#ffefc1d9</color>
+    <color name="mediacontroller_bg">#99000000</color>
+    <color name="background_dark">#f4f4f4</color>
+    <color name="blue">#ff0000ff</color>
+    <color name="green">#ff00ff00</color>
+    <color name="red">#ffff0000</color>
+    <color name="higtlight">#ff0078f0</color>
+    <color name="durationtext">#ff7d7d7d</color>
+    <color name="background">#ffc3ddea</color>
+    <color name="yellow">#ffffcc00</color>
+    <color name="title">#ff274462</color>
+    <color name="transparentblue">#445CACEE</color>
+    <color name="bili_red">#db77ab</color>
+    <color name="bili_red2">#efc1d9</color>
+    <color name="bili_red3">#fcf4f8</color>
+    <color name="main_tab_item_text_color">#fcf4f8</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#ff4081</color>
+    <color name="colorWhiteBackground">#dddddd</color>
+
+
+</resources>
