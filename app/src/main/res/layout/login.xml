@@ -109,32 +109,6 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal" >
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:text="微博"
-                android:textColor="#ffffff" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:text="微信"
-                android:textColor="#ffffff" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:text="QQ"
-                android:textColor="#ffffff" />
         </LinearLayout>
     </LinearLayout>
 
