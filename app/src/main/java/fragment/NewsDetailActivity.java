@@ -40,6 +40,8 @@ public class NewsDetailActivity  extends Activity {
     private TextView mTitle;
     private TextView mAuthor;
     private TextView mPubDate;
+    private TextView mContent;
+
     private WebView mWebView;
 
     private GestureDetector gd;
@@ -68,19 +70,21 @@ public class NewsDetailActivity  extends Activity {
 
      */
     private void initView() {
-        mHeader = (RelativeLayout) findViewById(R.id.news_detail_header);
-        mBack = (ImageButton) findViewById(R.id.main_head_back_button);
-        mBack.setOnClickListener(new NewsDetailOnClickListener());
-        mHeadTitle = (TextView) findViewById(R.id.systv);
+//        mHeader = (RelativeLayout) findViewById(R.id.news_detail_header);
+//        mBack = (ImageButton) findViewById(R.id.main_head_back_button);
+//        mBack.setOnClickListener(new NewsDetailOnClickListener());
+//        mHeadTitle = (TextView) findViewById(R.id.systv);
 //        mHeadTitle.setText(R.string.news_dedail_title);
-        mProgressbar = (ProgressBar) findViewById(R.id.main_head_progress);
-        mRefresh = (ImageButton) findViewById(R.id.main_head_refresh_button);
-        mRefresh.setOnClickListener(new NewsDetailOnClickListener());
+//        mProgressbar = (ProgressBar) findViewById(R.id.main_head_progress);
+//        mRefresh = (ImageButton) findViewById(R.id.main_head_refresh_button);
+//        mRefresh.setOnClickListener(new NewsDetailOnClickListener());
 
         mScrollView = (ScrollView) findViewById(R.id.news_detail_scrollview);
         mTitle = (TextView) findViewById(R.id.news_detail_title);
         mAuthor = (TextView) findViewById(R.id.news_detail_author);
         mPubDate = (TextView) findViewById(R.id.news_detail_date);
+        mContent = (TextView) findViewById(R.id.news_detail_content);
+
 //        mWebView = (WebView) findViewById(R.id.news_detail_webview);
 //        mWebView.getSettings().setJavaScriptEnabled(false);
 //        mWebView.getSettings().setSupportZoom(true);
@@ -94,66 +98,47 @@ public class NewsDetailActivity  extends Activity {
 
     private void initData() {
         loadNewsDetailData(newsDetail_url, false);
-        mTitle.setText("新闻标题");
-        mAuthor.setText("作者");
+
     }
 
 
 
     private void loadNewsDetailData(final String newsDetail_url, boolean isRefresh) {
-        headButtonSwitch(DATA_LOAD_ING);
         HashMap params = new HashMap();
         params.put("newsType", newsType);
         params.put("newsDetail_url", newsDetail_url);
         params.put("isRefresh", isRefresh);
 
 
+        mTitle.setText("新闻：云南省烟草专卖局（公司）局长（经理）陈卫东调研大理两烟工作(图)");
+        mAuthor.setText("云南新闻");
+        mPubDate.setText("2017年05月25日");
+        mContent.setText( "        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+                        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+                        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+                        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+                        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+                        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+                        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+                        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+                        +"\n"+"        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
+
+
+        );
+
 
 
 
     }
 
 
-    private void headButtonSwitch(int type) {
-        switch (type) {
-            case DATA_LOAD_ING:
-                mScrollView.setVisibility(View.GONE);
-                mProgressbar.setVisibility(View.VISIBLE);
-                mRefresh.setVisibility(View.GONE);
-                break;
-            case DATA_LOAD_COMPLETE:
-                mScrollView.setVisibility(View.VISIBLE);
-                mProgressbar.setVisibility(View.GONE);
-                mRefresh.setVisibility(View.VISIBLE);
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    private class NewsDetailOnClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.main_head_back_button:
-//                    finish();
-                    break;
-                case R.id.main_head_refresh_button:
-                    headButtonSwitch(DATA_LOAD_ING);
-                    isRefresh = true;
-                    loadNewsDetailData(newsDetail_url, isRefresh);
-                    break;
-            }
-        }
-    }
 
 
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        gd.onTouchEvent(event);
+//        gd.onTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
 

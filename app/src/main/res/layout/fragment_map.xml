@@ -35,7 +35,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:layout_marginTop="96dp"
-        android:src="@drawable/transplantae"></ImageButton>
+        android:src="@drawable/transplantaf"></ImageButton>
 
     <ImageButton
         android:id="@+id/imageButtonDisaster"
@@ -44,7 +44,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:layout_marginTop="136dp"
-        android:src="@drawable/disasterae"></ImageButton>
+        android:src="@drawable/disasteraf"></ImageButton>
 
 
     <ImageButton
@@ -54,7 +54,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:layout_marginTop="176dp"
-        android:src="@drawable/layerae"></ImageButton>
+        android:src="@drawable/layeraf"></ImageButton>
 
     <include
         android:id="@+id/floating_searchView"
