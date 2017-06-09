@@ -21,7 +21,7 @@ import java.util.ArrayList;
 //        import fragment.KnowledgeFragment;
 //        import fragment.LoginFragment;
 import fragment.HomeFragment;
-import fragment.PlantFragment;
+import fragment.LoginFragment;
 import fragment.MapFragment;
 import fragment.TechFragment;
 //import fragment.DictFragment;
@@ -60,6 +60,7 @@ public class MainActivity extends FragmentActivity implements
 //    private PlantFragment plantFragment;
     private MapFragment mapFragment;
     private TechFragment techFragment;
+    private LoginFragment loginFragment;
 
     //	private HuodongFragment huodongFragment;
 //    private KnowledgeFragment knowledgeFragment;
@@ -88,6 +89,7 @@ public class MainActivity extends FragmentActivity implements
         fragments.add(homeFragment);
         fragments.add(mapFragment);
         fragments.add(techFragment);
+        fragments.add(loginFragment);
 
 //        fragments.add(dictFragment);
 
@@ -118,6 +120,7 @@ public class MainActivity extends FragmentActivity implements
         homeFragment = new HomeFragment(context);
         mapFragment = new MapFragment(context);
         techFragment=new TechFragment(context);
+        loginFragment=new LoginFragment(context);
 
 //        knowledgeFragment = new KnowledgeFragment(context);
 //        loginFragment=new LoginFragment();
