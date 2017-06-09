@@ -40,13 +40,13 @@
             android:id="@+id/main_tab_item_jingxuan"
             style="@style/main_tab_item"
             android:checked="true"
-            android:drawableTop="@drawable/homepageaa"
+            android:drawableTop="@drawable/main_tab_huodong_bg"
             android:text="首页" />
 
         <RadioButton
             android:id="@+id/main_tab_item_zhuanti"
             style="@style/main_tab_item"
-            android:drawableTop="@drawable/monitoraa"
+            android:drawableTop="@drawable/main_tab_image_bg"
             android:text="监测" />
 
       
