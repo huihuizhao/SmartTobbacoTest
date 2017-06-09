@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -40,6 +41,7 @@ import com.esri.arcgisruntime.sample.smarttobacco.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -96,8 +98,7 @@ public class HomeFragment extends Fragment {
                 false);
         display = getActivity().getWindowManager().getDefaultDisplay();
         initViewPager(inflater);
-        initListView(inflater);
-        initScrollView();
+
 //		myCreate();
 
 
@@ -139,7 +140,33 @@ public class HomeFragment extends Fragment {
         //加载SimpleAdapter到ListView中
         mListView.setAdapter(simpleAdapter);
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                                    long id) {
+                // TODO Auto-generated method stub
+                if (position == 0) {
+                    // 跳转到新闻详情
+                    Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
+//                    intent.putExtra("newsType", Integer.parseInt(newsTitle.get("newsType").toString()));
+//                    intent.putExtra("newsDetail_url", newsTitle.get("url").toString());
+                    getActivity().startActivity(intent);
+
+                }
+
+//                Map<String, String> map = (Map<String, String>) (HomeFragment.this.simpleAdapter.getItem(position));
+//                String _id = map.get("_id");
+//                String name = map.get("name");
+
+            }
+
+
+        });
+
+
     }
+
 
     public ArrayList<HashMap<String, Object>> getItem() {
         ArrayList<HashMap<String, Object>> item = new ArrayList<HashMap<String, Object>>();
@@ -163,8 +190,6 @@ public class HomeFragment extends Fragment {
         map3.put("itemSummary", "截至5月15日，全省烤烟移栽工作圆满结束，移栽面积609万亩，推广膜下小苗节水移栽433万亩，全面实现在最佳节令移栽目标，为全省烤烟生产提质增效和促农增收打下坚实基础。");
         map3.put("itemPublishtime", "2017年05月16日");
         item.add(map3);
-
-
 
 
 //        }
@@ -416,6 +441,7 @@ public class HomeFragment extends Fragment {
 
             super.onPostExecute(result);
         }
+
     }
 
     private void myCreate() {

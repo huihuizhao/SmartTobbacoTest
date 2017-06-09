@@ -79,6 +79,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="fragment.NewsDetailActivity"
+            android:label="@string/title_activity_transplant_detail" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
 
          <activity
             android:name=".activity.AddActivity"

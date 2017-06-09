@@ -60,7 +60,7 @@
             android:src="@drawable/flipper_head_separator" />
     </RelativeLayout>
 
-    <!-- 有米广告设置 -->
+
     <RelativeLayout
         android:id="@+id/OffersMiniBannerLayout"
         android:layout_width="match_parent"
@@ -126,11 +126,7 @@
 
             <View style="@style/detail_cut_line" />
 
-            <WebView
-                android:id="@+id/news_detail_webview"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF" />
+
         </LinearLayout>
     </ScrollView>
 
