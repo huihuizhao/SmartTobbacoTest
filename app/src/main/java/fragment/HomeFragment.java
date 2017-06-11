@@ -154,6 +154,22 @@ public class HomeFragment extends Fragment {
                     getActivity().startActivity(intent);
 
                 }
+                if (position == 1) {
+                    // 跳转到新闻详情
+                    Intent intent = new Intent(getActivity(), News2DetailActivity.class);
+//                    intent.putExtra("newsType", Integer.parseInt(newsTitle.get("newsType").toString()));
+//                    intent.putExtra("newsDetail_url", newsTitle.get("url").toString());
+                    getActivity().startActivity(intent);
+
+                }
+                if (position == 2) {
+                    // 跳转到新闻详情
+                    Intent intent = new Intent(getActivity(), News3DetailActivity.class);
+//                    intent.putExtra("newsType", Integer.parseInt(newsTitle.get("newsType").toString()));
+//                    intent.putExtra("newsDetail_url", newsTitle.get("url").toString());
+                    getActivity().startActivity(intent);
+
+                }
 
 //                Map<String, String> map = (Map<String, String>) (HomeFragment.this.simpleAdapter.getItem(position));
 //                String _id = map.get("_id");
@@ -179,7 +195,7 @@ public class HomeFragment extends Fragment {
         item.add(map);
 
         HashMap<String, Object> map2 = new HashMap<String, Object>();
-        map2.put("itemTitle", "通知：云南省烟草病虫害预测预报及综合防治2014年工作要求");
+        map2.put("itemTitle", "通知：云南省烟草病虫害预测预报及综合防治2017年工作要求");
         map2.put("itemPhoto", R.drawable.newsimageba);
         map2.put("itemSummary", "2017年云南省烟草病虫害预测预报及综合防治工作重点推广以生物防治、物理防治、农业防治为主的绿色防控技术，围绕2017年烟草病虫害预测预报工作，加大烟草病虫害综合防治技术规范、烟草病虫害预测预报技术和工作规范和烟草农药合理使用技术规范的推广力度，切实做到烟草病虫害预测预报为烟叶生产服务。");
         map2.put("itemPublishtime", "2017年05月17日");

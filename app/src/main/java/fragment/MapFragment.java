@@ -3,6 +3,7 @@ package fragment;
 import android.app.AlertDialog;
 import android.app.Instrumentation;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,11 +37,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.data.ArcGISFeature;
+import com.esri.arcgisruntime.data.Feature;
+import com.esri.arcgisruntime.data.FeatureQueryResult;
+import com.esri.arcgisruntime.data.QueryParameters;
 import com.esri.arcgisruntime.data.ServiceFeatureTable;
+import com.esri.arcgisruntime.geometry.Envelope;
 import com.esri.arcgisruntime.layers.ArcGISMapImageLayer;
 import com.esri.arcgisruntime.layers.FeatureLayer;
 import com.esri.arcgisruntime.layers.SublayerList;
@@ -56,6 +62,9 @@ import com.esri.arcgisruntime.sample.smarttobacco.DisasterActivity;
 import com.esri.arcgisruntime.sample.smarttobacco.MainActivity;
 import com.esri.arcgisruntime.sample.smarttobacco.R;
 import com.esri.arcgisruntime.sample.smarttobacco.TransplantActivity;
+import com.esri.arcgisruntime.symbology.SimpleFillSymbol;
+import com.esri.arcgisruntime.symbology.SimpleLineSymbol;
+import com.esri.arcgisruntime.symbology.SimpleRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +115,10 @@ public class MapFragment extends Fragment implements OnItemClickListener {
     private ArcGISFeature mSelectedArcGISFeature;
     private android.graphics.Point mClickPoint;
     private ServiceFeatureTable mServiceFeatureTable;
+
+    private ServiceFeatureTable mServiceFeatureTableTown;
+    private  FeatureLayer mFeaturelayerTown;
+
     private Snackbar mSnackbarSuccess;
     private Snackbar mSnackbarFailure;
     private String mSelectedArcGISFeatureAttributeValue;
@@ -123,6 +136,8 @@ public class MapFragment extends Fragment implements OnItemClickListener {
     private MenuItem mCities = null;
     private MenuItem mContinent = null;
     private MenuItem mWorld = null;
+
+    private SearchView mSearchView;
 
     public MapFragment(Context context) {
         this.context = context;
@@ -160,7 +175,7 @@ public class MapFragment extends Fragment implements OnItemClickListener {
         // myCreate();
 
         // inflate MapView from layout
-
+        mSearchView = (SearchView) dictView.findViewById(R.id.searchView1);
 
         mCoordinatorLayout = dictView.findViewById(R.id.snackbarPosition);
 
@@ -197,6 +212,22 @@ public class MapFragment extends Fragment implements OnItemClickListener {
 
         // add the layer to the map
         map.getOperationalLayers().add(mFeatureLayer);
+
+
+        mServiceFeatureTableTown = new ServiceFeatureTable(getResources().getString(R.string.search_service_url));
+        // create the feature layer using the service feature table
+        mFeaturelayerTown = new FeatureLayer(mServiceFeatureTableTown);
+        mFeaturelayerTown.setOpacity(0.8f);
+        //override the renderer
+        SimpleLineSymbol lineSymbol= new SimpleLineSymbol(SimpleLineSymbol.Style.SOLID, Color.BLACK, 1);
+        SimpleFillSymbol fillSymbol = new SimpleFillSymbol(SimpleFillSymbol.Style.SOLID, Color.YELLOW, lineSymbol);
+        mFeaturelayerTown.setRenderer(new SimpleRenderer(fillSymbol));
+
+        // add the layer to the map
+        map.getOperationalLayers().add(mFeaturelayerTown);
+
+
+
 
         // set an on touch listener to listen for click events
         mMapView.setOnTouchListener(new DefaultMapViewOnTouchListener(getActivity(), mMapView) {
@@ -392,8 +423,84 @@ public class MapFragment extends Fragment implements OnItemClickListener {
         mLayers = mMapImageLayer.getSublayers();
 
 
+
+
+        // 设置搜索文本监听
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            // 当点击搜索按钮时触发该方法
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchForState("Oregon");
+                return false;
+            }
+
+            // 当搜索内容改变时触发该方法
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//                if (!TextUtils.isEmpty(newText)){
+//                    mListView.setFilterText(newText);
+//                }else{
+//                    mListView.clearTextFilter();
+//                }
+                return false;
+            }
+        });
+
+
+
+
         return dictView;
     }
+
+    /**
+     * Handle the search intent from the search widget
+     */
+
+    public void searchForState(final String searchString) {
+
+        // clear any previous selections
+        mFeaturelayerTown.clearSelection();
+
+        // create objects required to do a selection with a query
+        QueryParameters query = new QueryParameters();
+        //make search case insensitive
+        query.setWhereClause("upper(STATE_NAME) LIKE '%" + searchString.toUpperCase() + "%'");
+
+        // call select features
+        final ListenableFuture<FeatureQueryResult> future = mServiceFeatureTableTown.queryFeaturesAsync(query);
+        // add done loading listener to fire when the selection returns
+        future.addDoneListener(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // call get on the future to get the result
+                    FeatureQueryResult result = future.get();
+
+                    // check there are some results
+                    if (result.iterator().hasNext()) {
+
+                        // get the extend of the first feature in the result to zoom to
+                        Feature feature = result.iterator().next();
+                        Envelope envelope = feature.getGeometry().getExtent();
+                        mMapView.setViewpointGeometryAsync(envelope, 200);
+
+                        //Select the feature
+                        mFeaturelayerTown.selectFeature(feature);
+
+                    } else {
+                        Toast.makeText(getActivity(), "No states found with name: " + searchString, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "Feature search failed for: " + searchString + ". Error=" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(getResources().getString(R.string.app_name), "Feature search failed for: " + searchString + ". Error=" + e.getMessage());
+                }
+            }
+        });
+    }
+
+
+
+
 
     public static void simulateKey(final int KeyCode) {
         new Thread() {

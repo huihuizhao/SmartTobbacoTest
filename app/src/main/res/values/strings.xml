@@ -112,6 +112,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="mapservice">http://159.226.117.59/arcgis/rest/services/AndroidTest03/MapServer</string>
+    <string name="search_service_url">https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2</string>
     <!-- Menu Items -->
     <string name="弥勒2016年烟田">弥勒2016年烟田</string>
     <string name="耕地">耕地</string>

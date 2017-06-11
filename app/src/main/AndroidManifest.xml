@@ -4,9 +4,10 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <!-- <uses-sdk -->
-    <!-- android:minSdkVersion="15" -->
-    <!-- android:targetSdkVersion="19" /> -->
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="25" />
+
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -47,24 +48,21 @@
             </intent-filter>
         </activity>
         <!--<activity android:name=".activity.WelcomeActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
-        <activity
-            android:name=".activity.JingXuanDetailsActivity"
-            android:label="@string/title_activity_jing_xuan_details"></activity>
+
 
         <activity
             android:name=".AddActivity"
             android:label="@string/title_activity_add"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
         <activity
             android:name=".TransplantActivity"
-            android:label="@string/title_activity_transplant_detail" >
+            android:label="@string/title_activity_transplant_detail">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -73,7 +71,15 @@
         </activity>
         <activity
             android:name=".DisasterActivity"
-            android:label="@string/title_activity_transplant_detail" >
+            android:label="@string/title_activity_transplant_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".GrowActivity"
+            android:label="@string/title_activity_transplant_detail">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -81,15 +87,55 @@
         </activity>
         <activity
             android:name="fragment.NewsDetailActivity"
-            android:label="@string/title_activity_transplant_detail" >
+            android:label="@string/title_activity_transplant_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="fragment.News2DetailActivity"
+            android:label="@string/title_activity_transplant_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="fragment.News3DetailActivity"
+            android:label="@string/title_activity_transplant_detail">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="fragment.TechDetailActivity"
+            android:label="@string/title_activity_transplant_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="fragment.TechDetail2Activity"
+            android:label="@string/title_activity_transplant_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="fragment.TechDetail3Activity"
+            android:label="@string/title_activity_transplant_detail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
-         <activity
+        <activity
             android:name=".activity.AddActivity"
             android:label="@string/title_activity_add"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>

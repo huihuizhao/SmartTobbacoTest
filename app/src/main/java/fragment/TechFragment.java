@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -138,6 +139,48 @@ public class TechFragment extends Fragment {
 
         //加载SimpleAdapter到ListView中
         mListView.setAdapter(simpleAdapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                                    long id) {
+                // TODO Auto-generated method stub
+                if (position == 0) {
+                    // 跳转到新闻详情
+                    Intent intent = new Intent(getActivity(), TechDetailActivity.class);
+//                    intent.putExtra("newsType", Integer.parseInt(newsTitle.get("newsType").toString()));
+//                    intent.putExtra("newsDetail_url", newsTitle.get("url").toString());
+                    getActivity().startActivity(intent);
+
+                }
+                if (position == 1) {
+                    // 跳转到新闻详情
+                    Intent intent = new Intent(getActivity(), TechDetail2Activity.class);
+//                    intent.putExtra("newsType", Integer.parseInt(newsTitle.get("newsType").toString()));
+//                    intent.putExtra("newsDetail_url", newsTitle.get("url").toString());
+                    getActivity().startActivity(intent);
+
+                }
+                if (position == 2) {
+                    // 跳转到新闻详情
+                    Intent intent = new Intent(getActivity(), TechDetail3Activity.class);
+//                    intent.putExtra("newsType", Integer.parseInt(newsTitle.get("newsType").toString()));
+//                    intent.putExtra("newsDetail_url", newsTitle.get("url").toString());
+                    getActivity().startActivity(intent);
+
+                }
+
+//                Map<String, String> map = (Map<String, String>) (HomeFragment.this.simpleAdapter.getItem(position));
+//                String _id = map.get("_id");
+//                String name = map.get("name");
+
+            }
+
+
+        });
+
+
 
     }
 

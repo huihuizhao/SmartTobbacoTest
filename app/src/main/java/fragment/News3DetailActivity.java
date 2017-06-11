@@ -1,22 +1,14 @@
 package fragment;
 
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -24,7 +16,9 @@ import android.widget.TextView;
 
 import com.esri.arcgisruntime.sample.smarttobacco.R;
 
-public class NewsDetailActivity  extends Activity {
+import java.util.HashMap;
+
+public class News3DetailActivity extends Activity {
 
     private final static int DATA_LOAD_ING = 0x001;
     private final static int DATA_LOAD_COMPLETE = 0x002;
@@ -113,14 +107,14 @@ public class NewsDetailActivity  extends Activity {
         params.put("isRefresh", isRefresh);
 
 
-        newsImage1.setBackground(getResources().getDrawable(R.drawable.newspic01));//变形
+        newsImage1.setBackground(getResources().getDrawable(R.drawable.newspic03));//变形
 
-        mTitle.setText("新闻：云南省烟草专卖局（公司）局长（经理）陈卫东调研大理两烟工作(图)");
-        mAuthor.setText("云南新闻");
-        mPubDate.setText("2017年05月25日");
-        mContent.setText( "        5月23日至24日，云南省烟草专卖局（公司）局长陈卫东到大理州调研两烟工作，云南省烟草公司办公室、烟叶处、卷烟销售处负责人，大理州政府副州长段玠，大理州烟草公司经理樊在斗，红塔集团大理卷烟厂厂长袁国旺等陪同调研。"
-        +"\n"+"         通过实地调研并听取工商双方工作情况汇报后，陈卫东充分肯定大理州“两烟”工作。陈卫东指出，大理州经济运行保持良好发展势头难能可贵，有力地支撑了大理州“两烟”的发展。青海湖水源工程建设堪称“以工哺农、产业富农”的典范；现代物流建设体现了精益管理、精准控制、持续改善、模式创新，体系化的贝壳管理模式堪称典范；下庄烟站“两烟”业务、专销业务聚合，人员精减高效，管理精细、流程清晰、制度完善、管控到位，堪称基层站所建设管理的典范；促农增收工作形成生产链，实现工场化，堪称典范；红塔集团大理卷烟厂通过就地技术改造后实现了集约发展、清洁发展、绿色发展，堪称现代工厂的典范。工商双方的这些经验和模式很实用、可复制、可推广，为全省烟草转型发展探索了新路子。"
-                        +"\n"+"        就下一步大理烟草工作，陈卫东强调，一是要切实保持良好发展势头，促进“两烟”协调发展。要正确处理好烟叶生产和卷烟销售的关系，以税利增长为核心，既要保持烟叶的优势，又要培育卷烟的后发优势。要正确处理好工业和商业的关系，推动工商深度合作。二是切实转变营销观念，实现卷烟促量增效。要树立品牌培育新理念，挖掘旅游资源优势，转变营销管理方式，改善提升营销平台，推动营销队伍转型，加大品牌培育，加大营销市场化改革。三是切实转变烟叶生产方式，促进烟叶提质增效。进一步深化对大理烟叶优势的认识，在提升标准化生产水平上下功夫，改进烟叶生产管理方式，加大创新成果转化集成推广。四是强化专卖内管，促进市场健康发展。内管和外打相结合，抓好大要案查处，加强市场日常监管，坚决管好边界，规范投放行为，加强专卖队伍建设，严格纪律、严格内部管理，加强烟叶生产过程监管。五是持续开展模式创新、机制创新、管理创新、技术创新等，促进企业转型升级。六是要抓好企业党的建设，激发内生动力。抓好领导班子、领导干部，抓机构、抓平台、抓基层组织、抓党员队伍，为企业发展营造风清气正的政治生态。"
+        mTitle.setText("动态：云南烤烟移栽圆满结束 移栽面积609万亩");
+        mAuthor.setText("云南网");
+        mPubDate.setText("2017年05月17日");
+        mContent.setText( "        截至5月15日，全省烤烟移栽工作圆满结束，移栽面积609万亩，推广膜下小苗节水移栽433万亩，全面实现在最佳节令移栽目标，为全省烤烟生产提质增效和促农增收打下坚实基础。"
+        +"\n"+"         今年以来，全省烟区各级党委、政府和烟草部门加大烟叶供给侧结构性改革力度，着力在“控总量、转方式、促增收”上下功夫，紧紧围绕最佳节令移栽中心任务，扎实有序推进烤烟移栽工作。坚持市场导向，以“2260”高端特色烟叶开发为抓手，加大用好田好地栽烟宣传力度，优化种植布局，巩固云南烟叶优势地位。培育职业烟农，全省培训职业烟农累计7.5万户，种烟农户持续优化，全省户均种烟8.38亩，同比增加0.88亩，生产组织化水平持续提升。抢抓移栽节令，围绕烤烟移栽最佳节令，倒排育苗播种时间，加强烟苗管理，合理安排预整地进度，严格整地质量标准，确保全省在最佳节令高标准高质量完成移栽。推广先进技术，新增有机肥施用补贴每亩15元，全省烤烟推广有机肥施用面积525万亩，推广节水滴灌20万亩、膜下小苗节水移栽433万亩，为最佳节令完成烤烟移栽提供了有力保障。突出集中移栽，严格落实同一连片3至5天内集中移栽要求，缩短移栽周期，保证苗齐苗壮和大田烟株整齐度，提高生产质量均衡性。"
+                        +"\n"+"        "
 
 
 
