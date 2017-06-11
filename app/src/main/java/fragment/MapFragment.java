@@ -31,6 +31,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -430,7 +431,12 @@ public class MapFragment extends Fragment implements OnItemClickListener {
             // 当点击搜索按钮时触发该方法
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchForState("Oregon");
+                int searchEditTextId =  getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+                EditText textView = (EditText ) dictView.findViewById(searchEditTextId);
+//                textView.setTextSize(36);
+                String searchContent=textView.getText().toString();
+//                textView.setHint("按姓名和标题搜索");
+                searchForState(searchContent);
                 return false;
             }
 
