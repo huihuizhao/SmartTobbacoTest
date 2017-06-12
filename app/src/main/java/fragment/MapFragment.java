@@ -470,7 +470,8 @@ public class MapFragment extends Fragment implements OnItemClickListener {
         // create objects required to do a selection with a query
         QueryParameters query = new QueryParameters();
         //make search case insensitive
-        query.setWhereClause("upper(STATE_NAME) LIKE '%" + searchString.toUpperCase() + "%'");
+//        query.setWhereClause("upper(STATE_NAME) LIKE '%" + searchString.toUpperCase() + "%'");
+        query.setWhereClause("upper(NAME) LIKE '%" + searchString.toUpperCase() + "%'");
 
         // call select features
         final ListenableFuture<FeatureQueryResult> future = mServiceFeatureTableTown.queryFeaturesAsync(query);
