@@ -8,9 +8,15 @@ import java.util.Map;
 
 //import com.yuhj.ontheway.R;
 
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +24,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.BitmapFactory.Options;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.View;
@@ -31,6 +38,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class TransplantActivity extends Activity implements OnItemClickListener {
     private TextView coordinatesTextView;
     private ImageView imageButton;
@@ -40,6 +57,11 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
     private Uri imageFileUri;
     private static final int CAPTURE_PIC = 0;
     private Button submitButton;
+
+    private String urlParameters = "";
+    private String url_constant_parameters = "";
+    private String uploadServerUrl = "";
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,24 +142,47 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                 // : null);
                 //
                 // SendFile(imagePathArrayList);
+                String ip = "192.168.1.101";
+
+                urlParameters = "http://" + ip + ":8080/SmartTobaccoWeb/Insert.action?";
+                url_constant_parameters = "http://" + ip
+                        + ":8080/SmartTobaccoWeb/Insert.action?";
+                uploadServerUrl = "http://" + ip
+                        + ":8080/SmartTobaccoWeb/UploadServlet?";
+
+                showProgressDialog();
 
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             //Your code goes here
-                            String imageFile1 = Environment.getExternalStorageState().equals(
-                                    Environment.MEDIA_MOUNTED) ? Environment
-                                    .getExternalStorageDirectory() + "/" + "leftTop" + ".jpg" : null;
-//                            File file = new File("/storage/emulated/0/leftTop.jpg");
-                            File file1 = new File(imageFile1);
-                            UploadUtil.uploadFile(file1, "http://pic.giscloud.ac.cn");
-                            File file2 = new File("/storage/emulated/0/rightTop.jpg");
-                            UploadUtil.uploadFile(file2, "http://pic.giscloud.ac.cn");
-                            File file3 = new File("/storage/emulated/0/leftBottom.jpg");
-                            UploadUtil.uploadFile(file3, "http://pic.giscloud.ac.cn");
-                            File file4 = new File("/storage/emulated/0/rightBottom.jpg");
-                            UploadUtil.uploadFile(file4, "http://pic.giscloud.ac.cn");
+//                            String imageFile1 = Environment.getExternalStorageState().equals(
+//                                    Environment.MEDIA_MOUNTED) ? Environment
+//                                    .getExternalStorageDirectory() + "/" + "leftTop" + ".jpg" : null;
+////                            File file = new File("/storage/emulated/0/leftTop.jpg");
+//                            File file1 = new File(imageFile1);
+//                            UploadUtil.uploadFile(file1, "http://pic.giscloud.ac.cn");
+//                            File file2 = new File("/storage/emulated/0/rightTop.jpg");
+//                            UploadUtil.uploadFile(file2, "http://pic.giscloud.ac.cn");
+//                            File file3 = new File("/storage/emulated/0/leftBottom.jpg");
+//                            UploadUtil.uploadFile(file3, "http://pic.giscloud.ac.cn");
+//                            File file4 = new File("/storage/emulated/0/rightBottom.jpg");
+//                            UploadUtil.uploadFile(file4, "http://pic.giscloud.ac.cn");
+
+
+                            String ID = "1";
+                            String area = "10";
+                            String count = "10";
+                            String longitude = "10";
+                            String latitude = "10";
+                            String date = "10";
+                            String fieldID = "10";
+                            String town = "10";
+                            String picturePath = "10";
+
+                            // 上传数据库表格字段信息
+                            InsertToDatabaseService(ID, area, count, longitude, latitude, date, fieldID, town, picturePath);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -159,6 +204,99 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         submitButton.setOnClickListener(submitClickListener);
 
     }
+
+    // 显示对话框
+    private void showProgressDialog() {
+        dialog = new ProgressDialog(TransplantActivity.this);
+        dialog.setMessage("上传中...");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    // 处理消息，让主界面提示上传成功
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            MyToast.showToast(TransplantActivity.this, "上传成功");
+        }
+    };
+
+    /**
+     * 获取Struts2 Http 插入数据的请求信息
+     *
+     * @param userName
+     * @param password
+     */
+    public void InsertToDatabaseService(String ID, String area, String count,
+                                        String longitude, String latitude, String date, String fieldID, String town, String picturePath) {
+        // public void loginRemoteService(String userName, String password) {
+        String result = null;
+        try {
+
+            // 创建一个HttpClient对象
+
+            HttpClient httpclient = new DefaultHttpClient();
+            // 远程登录URL
+            // 下面这句是原有的
+            // processURL=processURL+"userName="+userName+"&password="+password;
+            urlParameters = url_constant_parameters + "ID=" + ID + "area=" + area + "&count=" + count + "&longitude=" + longitude
+                    + "&latitude=" + latitude + "&date=" + date + "&fieldID=" + fieldID + "&town=" + town + "&picturePath=" + picturePath;
+            Log.d("远程URL", urlParameters);
+            // 创建HttpGet对象
+            HttpGet request = new HttpGet(urlParameters);
+            // 请求信息类型MIME每种响应类型的输出（普通文本、html 和 XML，json）。允许的响应类型应当匹配资源类中生成的 MIME
+            // 类型
+            // 资源类生成的 MIME 类型应当匹配一种可接受的 MIME 类型。如果生成的 MIME 类型和可接受的 MIME 类型不
+            // 匹配，那么将
+            // 生成 com.sun.jersey.api.client.UniformInterfaceException。例如，将可接受的
+            // MIME 类型设置为 text/xml，而将
+            // 生成的 MIME 类型设置为 application/xml。将生成 UniformInterfaceException。
+            request.addHeader("Accept", "text/json");
+            // 获取响应的结果
+            HttpResponse response = httpclient.execute(request);
+            // 获取HttpEntity
+            HttpEntity entity = response.getEntity();
+            // 获取响应的结果信息
+            String json = EntityUtils.toString(entity, "UTF-8");
+            // JSON的解析过程
+            if (json != null) {
+                JSONObject jsonObject = new JSONObject(json);
+                result = jsonObject.get("message").toString();
+                dialog.dismiss();
+                Message msg = new Message();
+                handler.sendMessage(msg);
+
+            }
+            if (result == null) {
+                json = "登录失败请重新登录";
+            }
+            // 创建提示框提醒是否登录成功
+            AlertDialog.Builder builder = new AlertDialog.Builder(TransplantActivity.this);
+            builder.setTitle("提示")
+                    .setMessage(result)
+                    .setPositiveButton("确定",
+                            new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
+
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
