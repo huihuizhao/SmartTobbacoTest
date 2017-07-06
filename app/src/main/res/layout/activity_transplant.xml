@@ -180,6 +180,16 @@
                 android:padding="4dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/bottomright" />
+            <ImageView
+                android:id="@+id/imgForCheckPhoto"
+                android:layout_width="120dp"
+                android:layout_height="100dp"
+                android:layout_gravity="top|left"
+                android:layout_weight="1"
+                android:padding="4dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/bottomright"
+                />
         </LinearLayout>
     </LinearLayout>
 

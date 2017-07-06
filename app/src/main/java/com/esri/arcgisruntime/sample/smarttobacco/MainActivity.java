@@ -1,5 +1,6 @@
 package com.esri.arcgisruntime.sample.smarttobacco;
 
+import android.Manifest;
 import android.os.Bundle;
 
 //public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,7 @@ import fragment.TechFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -57,7 +59,7 @@ public class MainActivity extends FragmentActivity implements
     //	private JingXuanFragment jingXuanFragment;
 
     private HomeFragment homeFragment;
-//    private PlantFragment plantFragment;
+    //    private PlantFragment plantFragment;
     private MapFragment mapFragment;
     private TechFragment techFragment;
     private LoginFragment loginFragment;
@@ -80,7 +82,23 @@ public class MainActivity extends FragmentActivity implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initViews();
+
+//        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                1);
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 //        AseoZdpAseo.initTimer(this);
+        //判断是否开户相册权限
+//        if (PackageManager.PERMISSION_GRANTED ==   ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)) {
+//
+//            Camera.startCameraUrl(context, filename, CAMERA);
+//        }else{
+        //提示用户开户权限
+//        int RESULT_CODE_STARTCAMERA = 1;
+//        String[] perms = {"android.permission.CAMERA"};
+//        ActivityCompat.requestPermissions(MainActivity.this, perms, RESULT_CODE_STARTCAMERA);
+//        }
+
+
         group = (RadioGroup) findViewById(R.id.main_tab_bar);
         group.setOnCheckedChangeListener(this);
         fragments = new ArrayList<Fragment>();
@@ -119,8 +137,8 @@ public class MainActivity extends FragmentActivity implements
 
         homeFragment = new HomeFragment(context);
         mapFragment = new MapFragment(context);
-        techFragment=new TechFragment(context);
-        loginFragment=new LoginFragment(context);
+        techFragment = new TechFragment(context);
+        loginFragment = new LoginFragment(context);
 
 //        knowledgeFragment = new KnowledgeFragment(context);
 //        loginFragment=new LoginFragment();

@@ -4,19 +4,31 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 //import com.yuhj.ontheway.R;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
@@ -24,6 +36,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.BitmapFactory.Options;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -48,7 +65,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TransplantActivity extends Activity implements OnItemClickListener {
+public class TransplantActivity extends AppCompatActivity implements OnItemClickListener {
     private TextView coordinatesTextView;
     private ImageView imageButton;
     private int width;
@@ -63,11 +80,52 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
     private String uploadServerUrl = "";
     private ProgressDialog dialog;
 
+    //动态获取权限监听
+    private static PermissionListener mListener;
+
+    private final static int TAKEPHOTO = 100;
+    private final static int CHECKPHOTO = 200;
+    private final static int CROPPHOTO = 300;
+
+    private final static int TAKEPHOTO7 = 1007;
+    private final static int CHECKPHOTO7 = 2007;
+    private final static int CROPPHOTO7 = 3007;
+    private String fileprovider = "com.esri.arcgisruntime.sample.smarttobacco.fileprovider";
+    private String mPath;
+    private Uri imageUri;
+    private File cacheFile;
+    private String cachPath;
+    final int TARGET_HEAD_SIZE = 150;
+    private ImageView imgForCheckPhoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_transplant);
+        imgForCheckPhoto = (ImageView) findViewById(R.id.imgForCheckPhoto);
+        //        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                1);
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//
+
+//        int TAKE_PHOTO_REQUEST_CODE = 1;
+//        if (ContextCompat.checkSelfPermission(TransplantActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(TransplantActivity.this, new String[]{Manifest.permission.CAMERA}, TAKE_PHOTO_REQUEST_CODE);
+//        }
+
+
+        //判断是否开户相册权限
+//        if (PackageManager.PERMISSION_GRANTED ==   ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)) {
+//
+//            Camera.startCameraUrl(context, filename, CAMERA);
+//        }else{
+        //提示用户开户权限
+//        int RESULT_CODE_STARTCAMERA = 1;
+//        String[] perms = {"android.permission.CAMERA"};
+//        ActivityCompat.requestPermissions(TransplantActivity.this, perms, RESULT_CODE_STARTCAMERA);
+//        }
+
 
         TextView mTitleView = (TextView) findViewById(R.id.title_text);
         mTitleView.setText("种植");
@@ -80,7 +138,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         ImageButton imageButton1 = (ImageButton) findViewById(R.id.imageButtonLeftTop);
         OnClickListener ClickListener1 = new OnClickListener() {
             public void onClick(View v) {
-                InitiateDisplay("leftTop");
+//                InitiateDisplay("leftTop");
                 imageButton = (ImageButton) findViewById(R.id.imageButtonLeftTop);
                 StartCamara();
             }
@@ -90,7 +148,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         ImageButton imageButton2 = (ImageButton) findViewById(R.id.ImageButtonRightTop);
         OnClickListener ClickListener2 = new OnClickListener() {
             public void onClick(View v) {
-                InitiateDisplay("rightTop");
+//                InitiateDisplay("rightTop");
                 imageButton = (ImageButton) findViewById(R.id.ImageButtonRightTop);
                 StartCamara();
             }
@@ -100,7 +158,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         ImageButton imageButton3 = (ImageButton) findViewById(R.id.ImageButtonRightBottom);
         OnClickListener ClickListener3 = new OnClickListener() {
             public void onClick(View v) {
-                InitiateDisplay("rightBottom");
+//                InitiateDisplay("rightBottom");
                 imageButton = (ImageButton) findViewById(R.id.ImageButtonRightBottom);
                 StartCamara();
             }
@@ -110,7 +168,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         ImageButton imageButton4 = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
         OnClickListener ClickListener4 = new OnClickListener() {
             public void onClick(View v) {
-                InitiateDisplay("leftBottom");
+//                InitiateDisplay("leftBottom");
                 imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
             }
@@ -341,45 +399,319 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == CAPTURE_PIC) {
-            Options options = new Options();
-            options.inJustDecodeBounds = true;// 设置解码只是为了获取图片的width和height值,而不是真正获取图片
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath, options);// 解码后可以options.outWidth和options.outHeight来获取图片的尺寸
-
-            int widthRatio = (int) Math.ceil(options.outWidth / width);// 获取宽度的压缩比率
-            int heightRatio = (int) Math.ceil(options.outHeight / height);// 获取高度的压缩比率
-
-            if (widthRatio > 1 || heightRatio > 1) {// 只要其中一个的比率大于1,说明需要压缩
-                if (widthRatio >= heightRatio) {// 取options.inSampleSize为宽高比率中的最大值
-                    options.inSampleSize = widthRatio;
-                } else {
-                    options.inSampleSize = heightRatio;
-                }
-            }
-
-            options.inJustDecodeBounds = false;// 设置为真正的解码图片
-            bitmap = BitmapFactory.decodeFile(imageFilePath, options);// 解码图片
-
-            imageButton.setImageBitmap(rebuildPicture(bitmap, 120, 100));
-        }
+//        if (resultCode == RESULT_OK && requestCode == CAPTURE_PIC) {
+//            Options options = new Options();
+//            options.inJustDecodeBounds = true;// 设置解码只是为了获取图片的width和height值,而不是真正获取图片
+//            Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath, options);// 解码后可以options.outWidth和options.outHeight来获取图片的尺寸
+//
+//            int widthRatio = (int) Math.ceil(options.outWidth / width);// 获取宽度的压缩比率
+//            int heightRatio = (int) Math.ceil(options.outHeight / height);// 获取高度的压缩比率
+//
+//            if (widthRatio > 1 || heightRatio > 1) {// 只要其中一个的比率大于1,说明需要压缩
+//                if (widthRatio >= heightRatio) {// 取options.inSampleSize为宽高比率中的最大值
+//                    options.inSampleSize = widthRatio;
+//                } else {
+//                    options.inSampleSize = heightRatio;
+//                }
+//            }
+//
+//            options.inJustDecodeBounds = false;// 设置为真正的解码图片
+//            bitmap = BitmapFactory.decodeFile(imageFilePath, options);// 解码图片
+//
+//            imageButton.setImageBitmap(rebuildPicture(bitmap, 120, 100));
+//        }
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+//                case TAKEPHOTO:
+//                    startPhotoZoom(Uri.fromFile(new File(mPath + ".jpg")), TARGET_HEAD_SIZE);
+//                    break;
+//                case CHECKPHOTO:
+//                    Uri uri = data.getData();
+//                    startPhotoZoom(uri, TARGET_HEAD_SIZE);
+//                    break;
+                case CROPPHOTO:
+                    Bitmap bm = data.getParcelableExtra("data");
+                    imgForCheckPhoto.setImageBitmap(bm);
+                    break;
+
+                case TAKEPHOTO7:
+                    try {
+                        // 将拍摄的照片显示出来
+                        startPhotoZoom(new File(mPath + ".jpg"), 350);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case CHECKPHOTO7:
+                    // 判断手机系统版本号
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        // 4.4及以上系统使用这个方法处理图片
+                        handleImageOnKitKat(data);
+                    } else {
+                        // 4.4以下系统使用这个方法处理图片
+                        handleImageBeforeKitKat(data);
+                    }
+                    break;
+                case CROPPHOTO7:
+                    try {
+                        if (resultCode == RESULT_OK) {
+                            Bitmap bitmap = BitmapFactory.decodeStream(
+                                    getContentResolver().openInputStream(Uri.fromFile(new File(cachPath))));
+                            imgForCheckPhoto.setImageBitmap(bitmap);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
+
+
     }
 
-    private void InitiateDisplay(String place) {
-        Display display = getWindowManager().getDefaultDisplay();
-        width = display.getWidth();
-        height = display.getHeight();
 
-        imageFilePath = Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED) ? Environment
-                .getExternalStorageDirectory() + "/" + place + ".jpg" : null;
-        imageFileUri = Uri.fromFile(new File(imageFilePath));
+    @TargetApi(19)
+    private String uriToPath(Uri uri) {
+        String path = null;
+        if (DocumentsContract.isDocumentUri(this, uri)) {
+            // 如果是document类型的Uri，则通过document id处理
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                String id = docId.split(":")[1]; // 解析出数字格式的id
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                path = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+            } else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                Uri contentUri =
+                        ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),
+                                Long.valueOf(docId));
+                path = getImagePath(contentUri, null);
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            // 如果是content类型的Uri，则使用普通方式处理
+            path = getImagePath(uri, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            // 如果是file类型的Uri，直接获取图片路径即可
+            path = uri.getPath();
+        }
+        return path;
     }
+
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        // 通过Uri和selection来获取真实的图片路径
+        Cursor cursor = getContentResolver().query(uri, null, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
+    public static Uri getImageContentUri(Context context, File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver()
+                .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.DATA + "=? ",
+                        new String[]{filePath}, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    @TargetApi(19)
+    private void handleImageOnKitKat(Intent data) {
+        Uri uri = data.getData();
+        Log.d("TAG", "handleImageOnKitKat: uri is " + uri);
+        String imagePath = uriToPath(uri);
+        //        displayImage(imagePath); // 根据图片路径显示图片
+
+        Log.i("TAG", "file://" + imagePath + "选择图片的URI" + uri);
+        startPhotoZoom(new File(imagePath), 350);
+    }
+
+    private void handleImageBeforeKitKat(Intent data) {
+        Uri uri = data.getData();
+        String imagePath = getImagePath(uri, null);
+        //        displayImage(imagePath);
+        Log.i("TAG", "file://" + imagePath + "选择图片的URI" + uri);
+        startPhotoZoom(new File(imagePath), 350);
+    }
+
+
+    @TargetApi(23)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0) {
+                    List<String> deniedPermissions = new ArrayList<>();
+                    for (int i = 0; i < grantResults.length; i++) {
+                        int grantResult = grantResults[i];
+                        String permission = permissions[i];
+                        if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                            deniedPermissions.add(permission);
+                        }
+                    }
+                    if (deniedPermissions.isEmpty()) {
+                        mListener.onGranted();
+                    } else {
+                        mListener.onDenied(deniedPermissions);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * 剪裁图片
+     */
+    private void startPhotoZoom(File file, int size) {
+        //Log.i("TAG", getImageContentUri(this, file) + "裁剪照片的真实地址");
+        try {
+            cachPath = FileUtils.getStorageDirectory() + UUID.randomUUID().toString() + ".jpg";
+            cacheFile = new File(cachPath);
+            Intent intent = new Intent("com.android.camera.action.CROP");
+            intent.setDataAndType(getImageContentUri(this, file), "image/*");//自己使用Content Uri替换File Uri
+            intent.putExtra("crop", "true");
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("outputX", size);
+            intent.putExtra("outputY", size);
+            intent.putExtra("scale", true);
+            intent.putExtra("return-data", false);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cacheFile));//定义输出的File Uri
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+            intent.putExtra("noFaceDetection", true);
+            startActivityForResult(intent, CROPPHOTO7);
+        } catch (ActivityNotFoundException e) {
+            String errorMessage = "Your device doesn't support the crop action!";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void StartCamara() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 相机捕捉图片的意图
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);// 指定系统相机拍照保存在imageFileUri所指的位置
-        startActivityForResult(intent, CAPTURE_PIC);// 启动系统相机,等待返回
+        //判断是否开户相册权限
+        Toast.makeText(this, "准备启动相机", Toast.LENGTH_LONG).show();
+
+        if (ActivityCompat.checkSelfPermission(TransplantActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "请开启应用拍照权限", Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(TransplantActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+        }
+        if (ActivityCompat.checkSelfPermission(TransplantActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "已经开启存储权限", Toast.LENGTH_LONG).show();
+//            ActivityCompat.requestPermissions(TransplantActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},140);
+        }
+
+        if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(TransplantActivity.this, android.Manifest.permission.CAMERA)) {
+            Toast.makeText(this, "已经开启相机权限", Toast.LENGTH_LONG).show();
+//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 相机捕捉图片的意图
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);// 指定系统相机拍照保存在imageFileUri所指的位置
+//            startActivityForResult(intent, CAPTURE_PIC);// 启动系统相机,等待返回
+
+            String[] permissions = {
+                    Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+            requestRuntimePermission(permissions, new PermissionListener() {
+                @Override
+                public void onGranted() {
+                    myTakePhotoFor7();
+                }
+
+                @Override
+                public void onDenied(List<String> deniedPermission) {
+                    Toast.makeText(TransplantActivity.this, deniedPermission.toString() + "权限被拒绝", Toast.LENGTH_LONG).show();
+                    //有权限被拒绝，什么也不做好了，看你心情
+                }
+            });
+
+
+        } else {
+//            提示用户开户权限
+            Toast.makeText(this, "请开启应用拍照权限", Toast.LENGTH_LONG).show();
+            int RESULT_CODE_STARTCAMERA = 1;
+            String[] perms = {"android.permission.CAMERA"};
+            ActivityCompat.requestPermissions(TransplantActivity.this, perms, RESULT_CODE_STARTCAMERA);
+        }
+
+
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 相机捕捉图片的意图
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);// 指定系统相机拍照保存在imageFileUri所指的位置
+//        startActivityForResult(intent, CAPTURE_PIC);// 启动系统相机,等待返回
+    }
+
+    //andrpoid 6.0 需要写运行时权限
+    public void requestRuntimePermission(String[] permissions, PermissionListener listener) {
+
+        mListener = listener;
+        List<String> permissionList = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(TransplantActivity.this, permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                permissionList.add(permission);
+            }
+        }
+        if (!permissionList.isEmpty()) {
+            ActivityCompat.requestPermissions(TransplantActivity.this,
+                    permissionList.toArray(new String[permissionList.size()]), 1);
+        } else {
+            mListener.onGranted();
+        }
+    }
+
+    private void myTakePhotoFor7() {
+//        String mUUID = UUID.randomUUID().toString();
+//        mPath = FileUtils.getStorageDirectory() + mUUID;
+        mPath = FileUtils.getStorageDirectory() + "leftTop";
+
+        File cameraFile = new File(mPath + ".jpg");
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            imageUri = Uri.fromFile(cameraFile);
+        } else {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            imageUri = FileProvider.getUriForFile(TransplantActivity.this, fileprovider,
+                    cameraFile);
+        }
+        // 启动相机程序
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, TAKEPHOTO7);
+    }
+
+    public interface PermissionListener {
+        /**
+         * 成功获取权限
+         */
+        void onGranted();
+
+        /**
+         * 为获取权限
+         */
+        void onDenied(List<String> deniedPermission);
     }
 
     private void SendFile(ArrayList<String> filepaths) {
