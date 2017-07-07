@@ -67,7 +67,7 @@ import org.json.JSONObject;
 
 public class TransplantActivity extends AppCompatActivity implements OnItemClickListener {
     private TextView coordinatesTextView;
-    private ImageView imageButton;
+//    private ImageView imageButton;
     private int width;
     private int height;
     private String imageFilePath;
@@ -96,14 +96,21 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
     private File cacheFile;
     private String cachPath;
     final int TARGET_HEAD_SIZE = 150;
-    private ImageView imgForCheckPhoto;
+    private ImageView imageView01;
+    private ImageView imageView02;
+    private ImageView imageView03;
+    private ImageView imageView04;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_transplant);
-        imgForCheckPhoto = (ImageView) findViewById(R.id.imgForCheckPhoto);
+        imageView01 = (ImageView) findViewById(R.id.imageView01);
+        imageView02 = (ImageView) findViewById(R.id.imageView02);
+        imageView03 = (ImageView) findViewById(R.id.imageView03);
+        imageView04 = (ImageView) findViewById(R.id.imageView04);
         //        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
 //                1);
 //        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -135,45 +142,42 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
         String coordinares = "";
         coordinatesTextView.setText(coordinares);
 
-        ImageButton imageButton1 = (ImageButton) findViewById(R.id.imageButtonLeftTop);
-        OnClickListener ClickListener1 = new OnClickListener() {
-            public void onClick(View v) {
-//                InitiateDisplay("leftTop");
-                imageButton = (ImageButton) findViewById(R.id.imageButtonLeftTop);
-                StartCamara();
-            }
-        };
-        imageButton1.setOnClickListener(ClickListener1);
 
-        ImageButton imageButton2 = (ImageButton) findViewById(R.id.ImageButtonRightTop);
-        OnClickListener ClickListener2 = new OnClickListener() {
-            public void onClick(View v) {
-//                InitiateDisplay("rightTop");
-                imageButton = (ImageButton) findViewById(R.id.ImageButtonRightTop);
-                StartCamara();
-            }
-        };
-        imageButton2.setOnClickListener(ClickListener2);
 
-        ImageButton imageButton3 = (ImageButton) findViewById(R.id.ImageButtonRightBottom);
-        OnClickListener ClickListener3 = new OnClickListener() {
-            public void onClick(View v) {
-//                InitiateDisplay("rightBottom");
-                imageButton = (ImageButton) findViewById(R.id.ImageButtonRightBottom);
-                StartCamara();
-            }
-        };
-        imageButton3.setOnClickListener(ClickListener3);
-
-        ImageButton imageButton4 = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
-        OnClickListener ClickListener4 = new OnClickListener() {
+        OnClickListener ImageViewClickListener01 = new OnClickListener() {
             public void onClick(View v) {
 //                InitiateDisplay("leftBottom");
-                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
+//                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
             }
         };
-        imageButton4.setOnClickListener(ClickListener4);
+        imageView01.setOnClickListener(ImageViewClickListener01);
+
+        OnClickListener ImageViewClickListener02 = new OnClickListener() {
+            public void onClick(View v) {
+//                InitiateDisplay("leftBottom");
+//                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
+                StartCamara();
+            }
+        };
+        imageView02.setOnClickListener(ImageViewClickListener02);
+        OnClickListener ImageViewClickListener03 = new OnClickListener() {
+            public void onClick(View v) {
+//                InitiateDisplay("leftBottom");
+//                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
+                StartCamara();
+            }
+        };
+        imageView03.setOnClickListener(ImageViewClickListener03);
+        OnClickListener ImageViewClickListener04 = new OnClickListener() {
+            public void onClick(View v) {
+//                InitiateDisplay("leftBottom");
+//                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
+                StartCamara();
+            }
+        };
+        imageView04.setOnClickListener(ImageViewClickListener04);
+
 
         submitButton = (Button) findViewById(R.id.SubmitButton);
         OnClickListener submitClickListener = new OnClickListener() {
@@ -432,7 +436,7 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
 //                    break;
                 case CROPPHOTO:
                     Bitmap bm = data.getParcelableExtra("data");
-                    imgForCheckPhoto.setImageBitmap(bm);
+                    imageView01.setImageBitmap(bm);
                     break;
 
                 case TAKEPHOTO7:
@@ -458,7 +462,7 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
                         if (resultCode == RESULT_OK) {
                             Bitmap bitmap = BitmapFactory.decodeStream(
                                     getContentResolver().openInputStream(Uri.fromFile(new File(cachPath))));
-                            imgForCheckPhoto.setImageBitmap(bitmap);
+                            imageView01.setImageBitmap(bitmap);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
