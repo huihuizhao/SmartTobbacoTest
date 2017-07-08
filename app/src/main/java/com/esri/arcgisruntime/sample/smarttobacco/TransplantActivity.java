@@ -67,7 +67,7 @@ import org.json.JSONObject;
 
 public class TransplantActivity extends AppCompatActivity implements OnItemClickListener {
     private TextView coordinatesTextView;
-//    private ImageView imageButton;
+    //    private ImageView imageButton;
     private int width;
     private int height;
     private String imageFilePath;
@@ -100,6 +100,7 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
     private ImageView imageView02;
     private ImageView imageView03;
     private ImageView imageView04;
+    private int clickedImageViewNumber = 1;
 
 
     @Override
@@ -143,12 +144,12 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
         coordinatesTextView.setText(coordinares);
 
 
-
         OnClickListener ImageViewClickListener01 = new OnClickListener() {
             public void onClick(View v) {
 //                InitiateDisplay("leftBottom");
 //                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
+                clickedImageViewNumber = 1;
             }
         };
         imageView01.setOnClickListener(ImageViewClickListener01);
@@ -158,6 +159,7 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
 //                InitiateDisplay("leftBottom");
 //                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
+                clickedImageViewNumber = 2;
             }
         };
         imageView02.setOnClickListener(ImageViewClickListener02);
@@ -166,6 +168,7 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
 //                InitiateDisplay("leftBottom");
 //                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
+                clickedImageViewNumber = 3;
             }
         };
         imageView03.setOnClickListener(ImageViewClickListener03);
@@ -174,6 +177,7 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
 //                InitiateDisplay("leftBottom");
 //                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
+                clickedImageViewNumber = 4;
             }
         };
         imageView04.setOnClickListener(ImageViewClickListener04);
@@ -462,7 +466,17 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
                         if (resultCode == RESULT_OK) {
                             Bitmap bitmap = BitmapFactory.decodeStream(
                                     getContentResolver().openInputStream(Uri.fromFile(new File(cachPath))));
-                            imageView01.setImageBitmap(bitmap);
+
+                            if (clickedImageViewNumber == 1) {
+                                imageView01.setImageBitmap(bitmap);
+                            } else if (clickedImageViewNumber == 2) {
+                                imageView02.setImageBitmap(bitmap);
+                            } else if (clickedImageViewNumber == 3) {
+                                imageView03.setImageBitmap(bitmap);
+                            } else if (clickedImageViewNumber == 4) {
+                                imageView04.setImageBitmap(bitmap);
+                            }
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -618,19 +632,19 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
 
     private void StartCamara() {
         //判断是否开户相册权限
-        Toast.makeText(this, "准备启动相机", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "准备启动相机", Toast.LENGTH_LONG).show();
 
         if (ActivityCompat.checkSelfPermission(TransplantActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "请开启应用拍照权限", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "请开启应用拍照权限", Toast.LENGTH_LONG).show();
             ActivityCompat.requestPermissions(TransplantActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
         }
         if (ActivityCompat.checkSelfPermission(TransplantActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "已经开启存储权限", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "已经开启存储权限", Toast.LENGTH_LONG).show();
 //            ActivityCompat.requestPermissions(TransplantActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},140);
         }
 
         if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(TransplantActivity.this, android.Manifest.permission.CAMERA)) {
-            Toast.makeText(this, "已经开启相机权限", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "已经开启相机权限", Toast.LENGTH_LONG).show();
 //            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 相机捕捉图片的意图
 //            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);// 指定系统相机拍照保存在imageFileUri所指的位置
 //            startActivityForResult(intent, CAPTURE_PIC);// 启动系统相机,等待返回
@@ -655,7 +669,7 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
 
         } else {
 //            提示用户开户权限
-            Toast.makeText(this, "请开启应用拍照权限", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "请开启应用拍照权限", Toast.LENGTH_LONG).show();
             int RESULT_CODE_STARTCAMERA = 1;
             String[] perms = {"android.permission.CAMERA"};
             ActivityCompat.requestPermissions(TransplantActivity.this, perms, RESULT_CODE_STARTCAMERA);
