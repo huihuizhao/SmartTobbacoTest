@@ -65,7 +65,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TransplantActivity extends AppCompatActivity implements OnItemClickListener {
+public class TransplantActivity extends Activity implements OnItemClickListener {
     private TextView coordinatesTextView;
     //    private ImageView imageButton;
     private int width;
@@ -108,6 +108,8 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_transplant);
+//        TextView mTitleView = (TextView) findViewById(R.id.title_text);
+//        mTitleView.setText("移栽上报");
         imageView01 = (ImageView) findViewById(R.id.imageView01);
         imageView02 = (ImageView) findViewById(R.id.imageView02);
         imageView03 = (ImageView) findViewById(R.id.imageView03);
@@ -135,8 +137,8 @@ public class TransplantActivity extends AppCompatActivity implements OnItemClick
 //        }
 
 
-        TextView mTitleView = (TextView) findViewById(R.id.title_text);
-        mTitleView.setText("种植");
+//        TextView mTitleView = (TextView) findViewById(R.id.title_text);
+//        mTitleView.setText("种植");
 
         coordinatesTextView = (TextView) findViewById(R.id.textViewCoordinates);
 //		String coordinares = GetCoordinates();

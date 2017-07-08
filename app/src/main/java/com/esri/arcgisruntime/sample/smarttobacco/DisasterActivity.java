@@ -2,6 +2,7 @@ package com.esri.arcgisruntime.sample.smarttobacco;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -60,7 +61,7 @@ import java.util.UUID;
 
 //import com.yuhj.ontheway.R;
 
-public class DisasterActivity extends AppCompatActivity implements OnItemClickListener {
+public class DisasterActivity extends Activity implements OnItemClickListener {
     private TextView coordinatesTextView;
 //    private ImageView imageButton;
     private int width;
@@ -101,7 +102,9 @@ public class DisasterActivity extends AppCompatActivity implements OnItemClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_transplant);
+        setContentView(R.layout.activity_disaster);
+        TextView mTitleView = (TextView) findViewById(R.id.title_text);
+        mTitleView.setText("灾害上报");
         imageView01 = (ImageView) findViewById(R.id.imageView01);
         imageView02 = (ImageView) findViewById(R.id.imageView02);
         imageView03 = (ImageView) findViewById(R.id.imageView03);
@@ -129,8 +132,8 @@ public class DisasterActivity extends AppCompatActivity implements OnItemClickLi
 //        }
 
 
-        TextView mTitleView = (TextView) findViewById(R.id.title_text);
-        mTitleView.setText("种植");
+//        TextView mTitleView = (TextView) findViewById(R.id.title_text);
+//        mTitleView.setText("种植");
 
         coordinatesTextView = (TextView) findViewById(R.id.textViewCoordinates);
 //		String coordinares = GetCoordinates();
