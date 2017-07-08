@@ -60,9 +60,9 @@ import java.util.UUID;
 
 //import com.yuhj.ontheway.R;
 
-public class DisasterActivity extends Activity implements OnItemClickListener {
+public class DisasterActivity01 extends Activity implements OnItemClickListener {
     private TextView coordinatesTextView;
-    //    private ImageView imageButton;
+//    private ImageView imageButton;
     private int width;
     private int height;
     private String imageFilePath;
@@ -104,7 +104,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_disaster);
         TextView mTitleView = (TextView) findViewById(R.id.title_text);
-        mTitleView.setText("灾害监测");
+        mTitleView.setText("灾害上报");
         disasterImageView01 = (ImageView) findViewById(R.id.disasterImageView01);
         disasterImageView02 = (ImageView) findViewById(R.id.disasterImageView02);
         disasterImageView03 = (ImageView) findViewById(R.id.disasterImageView03);
@@ -141,12 +141,12 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
         coordinatesTextView.setText(coordinares);
 
 
+
         OnClickListener ImageViewClickListener01 = new OnClickListener() {
             public void onClick(View v) {
 //                InitiateDisplay("leftBottom");
 //                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
-                clickedImageViewNumber = 1;
             }
         };
         disasterImageView01.setOnClickListener(ImageViewClickListener01);
@@ -156,7 +156,6 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
 //                InitiateDisplay("leftBottom");
 //                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
-                clickedImageViewNumber = 2;
             }
         };
         disasterImageView02.setOnClickListener(ImageViewClickListener02);
@@ -165,7 +164,6 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
 //                InitiateDisplay("leftBottom");
 //                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
-                clickedImageViewNumber = 3;
             }
         };
         disasterImageView03.setOnClickListener(ImageViewClickListener03);
@@ -174,7 +172,6 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
 //                InitiateDisplay("leftBottom");
 //                imageButton = (ImageButton) findViewById(R.id.ImageButtonLeftBottom);
                 StartCamara();
-                clickedImageViewNumber = 4;
             }
         };
         disasterImageView04.setOnClickListener(ImageViewClickListener04);
@@ -256,10 +253,10 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                 thread.start();
 
 
-                Toast.makeText(DisasterActivity.this, "已发送",
+                Toast.makeText(DisasterActivity01.this, "已发送",
                         Toast.LENGTH_LONG).show();
 
-                DisasterActivity.this.finish();
+                DisasterActivity01.this.finish();
 
             }
 
@@ -270,7 +267,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
 
     // 显示对话框
     private void showProgressDialog() {
-        dialog = new ProgressDialog(DisasterActivity.this);
+        dialog = new ProgressDialog(DisasterActivity01.this);
         dialog.setMessage("上传中...");
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -281,7 +278,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            MyToast.showToast(DisasterActivity.this, "上传成功");
+            MyToast.showToast(DisasterActivity01.this, "上传成功");
         }
     };
 
@@ -335,7 +332,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                 json = "登录失败请重新登录";
             }
             // 创建提示框提醒是否登录成功
-            AlertDialog.Builder builder = new AlertDialog.Builder(DisasterActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(DisasterActivity01.this);
             builder.setTitle("提示")
                     .setMessage(result)
                     .setPositiveButton("确定",
@@ -463,17 +460,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                         if (resultCode == RESULT_OK) {
                             Bitmap bitmap = BitmapFactory.decodeStream(
                                     getContentResolver().openInputStream(Uri.fromFile(new File(cachPath))));
-
-                            if (clickedImageViewNumber == 1) {
-                                disasterImageView01.setImageBitmap(bitmap);
-                            } else if (clickedImageViewNumber == 2) {
-                                disasterImageView02.setImageBitmap(bitmap);
-                            } else if (clickedImageViewNumber == 3) {
-                                disasterImageView03.setImageBitmap(bitmap);
-                            } else if (clickedImageViewNumber == 4) {
-                                disasterImageView04.setImageBitmap(bitmap);
-                            }
-
+                            disasterImageView01.setImageBitmap(bitmap);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -631,16 +618,16 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
         //判断是否开户相册权限
 //        Toast.makeText(this, "准备启动相机", Toast.LENGTH_LONG).show();
 
-        if (ActivityCompat.checkSelfPermission(DisasterActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(DisasterActivity01.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 //            Toast.makeText(this, "请开启应用拍照权限", Toast.LENGTH_LONG).show();
-            ActivityCompat.requestPermissions(DisasterActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+            ActivityCompat.requestPermissions(DisasterActivity01.this, new String[]{Manifest.permission.CAMERA}, 1);
         }
-        if (ActivityCompat.checkSelfPermission(DisasterActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(DisasterActivity01.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 //            Toast.makeText(this, "已经开启存储权限", Toast.LENGTH_LONG).show();
 //            ActivityCompat.requestPermissions(TransplantActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},140);
         }
 
-        if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(DisasterActivity.this, Manifest.permission.CAMERA)) {
+        if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(DisasterActivity01.this, Manifest.permission.CAMERA)) {
 //            Toast.makeText(this, "已经开启相机权限", Toast.LENGTH_LONG).show();
 //            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);// 相机捕捉图片的意图
 //            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);// 指定系统相机拍照保存在imageFileUri所指的位置
@@ -658,7 +645,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
 
                 @Override
                 public void onDenied(List<String> deniedPermission) {
-                    Toast.makeText(DisasterActivity.this, deniedPermission.toString() + "权限被拒绝", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DisasterActivity01.this, deniedPermission.toString() + "权限被拒绝", Toast.LENGTH_LONG).show();
                     //有权限被拒绝，什么也不做好了，看你心情
                 }
             });
@@ -669,7 +656,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
 //            Toast.makeText(this, "请开启应用拍照权限", Toast.LENGTH_LONG).show();
             int RESULT_CODE_STARTCAMERA = 1;
             String[] perms = {"android.permission.CAMERA"};
-            ActivityCompat.requestPermissions(DisasterActivity.this, perms, RESULT_CODE_STARTCAMERA);
+            ActivityCompat.requestPermissions(DisasterActivity01.this, perms, RESULT_CODE_STARTCAMERA);
         }
 
 
@@ -684,13 +671,13 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
         mListener = listener;
         List<String> permissionList = new ArrayList<>();
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(DisasterActivity.this, permission)
+            if (ContextCompat.checkSelfPermission(DisasterActivity01.this, permission)
                     != PackageManager.PERMISSION_GRANTED) {
                 permissionList.add(permission);
             }
         }
         if (!permissionList.isEmpty()) {
-            ActivityCompat.requestPermissions(DisasterActivity.this,
+            ActivityCompat.requestPermissions(DisasterActivity01.this,
                     permissionList.toArray(new String[permissionList.size()]), 1);
         } else {
             mListener.onGranted();
@@ -709,7 +696,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
             imageUri = Uri.fromFile(cameraFile);
         } else {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            imageUri = FileProvider.getUriForFile(DisasterActivity.this, fileprovider,
+            imageUri = FileProvider.getUriForFile(DisasterActivity01.this, fileprovider,
                     cameraFile);
         }
         // 启动相机程序
@@ -751,14 +738,14 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                 newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);// (0
 
                 Toast.makeText(
-                        DisasterActivity.this,
+                        DisasterActivity01.this,
                         "正在上传第" + String.valueOf(i) + "张(共" + photoCount
                                 + "张)...", Toast.LENGTH_LONG).show();
                 Thread thread = new SendFileThread(stream.toByteArray());
                 thread.start();
 
                 Toast.makeText(
-                        DisasterActivity.this,
+                        DisasterActivity01.this,
                         "第" + String.valueOf(i) + "张上传完成(共" + photoCount
                                 + "张)...", Toast.LENGTH_LONG).show();
                 i++;
