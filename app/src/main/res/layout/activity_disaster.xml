@@ -46,7 +46,7 @@
                 android:id="@+id/TextView01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="移栽株数："
+                android:text="灾害种类："
                 android:textSize="18dp" />
 
             <EditText
@@ -67,7 +67,7 @@
                 android:id="@+id/TextView02"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="品        种："
+                android:text="严重程度："
                 android:textSize="18dp" />
 
             <EditText

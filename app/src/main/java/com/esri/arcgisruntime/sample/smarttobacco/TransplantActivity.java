@@ -96,10 +96,10 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
     private File cacheFile;
     private String cachPath;
     final int TARGET_HEAD_SIZE = 150;
-    private ImageView imageView01;
-    private ImageView imageView02;
-    private ImageView imageView03;
-    private ImageView imageView04;
+    private ImageView transplantImageView01;
+    private ImageView transplantImageView02;
+    private ImageView transplantImageView03;
+    private ImageView transplantImageView04;
     private int clickedImageViewNumber = 1;
 
 
@@ -108,12 +108,12 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_transplant);
-//        TextView mTitleView = (TextView) findViewById(R.id.title_text);
-//        mTitleView.setText("移栽上报");
-        imageView01 = (ImageView) findViewById(R.id.imageView01);
-        imageView02 = (ImageView) findViewById(R.id.imageView02);
-        imageView03 = (ImageView) findViewById(R.id.imageView03);
-        imageView04 = (ImageView) findViewById(R.id.imageView04);
+        TextView mTitleView = (TextView) findViewById(R.id.title_text);
+        mTitleView.setText("移栽上报");
+        transplantImageView01 = (ImageView) findViewById(R.id.transplantImageView01);
+        transplantImageView02 = (ImageView) findViewById(R.id.transplantImageView02);
+        transplantImageView03 = (ImageView) findViewById(R.id.transplantImageView03);
+        transplantImageView04 = (ImageView) findViewById(R.id.transplantImageView04);
         //        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
 //                1);
 //        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -154,7 +154,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                 clickedImageViewNumber = 1;
             }
         };
-        imageView01.setOnClickListener(ImageViewClickListener01);
+        transplantImageView01.setOnClickListener(ImageViewClickListener01);
 
         OnClickListener ImageViewClickListener02 = new OnClickListener() {
             public void onClick(View v) {
@@ -164,7 +164,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                 clickedImageViewNumber = 2;
             }
         };
-        imageView02.setOnClickListener(ImageViewClickListener02);
+        transplantImageView02.setOnClickListener(ImageViewClickListener02);
         OnClickListener ImageViewClickListener03 = new OnClickListener() {
             public void onClick(View v) {
 //                InitiateDisplay("leftBottom");
@@ -173,7 +173,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                 clickedImageViewNumber = 3;
             }
         };
-        imageView03.setOnClickListener(ImageViewClickListener03);
+        transplantImageView03.setOnClickListener(ImageViewClickListener03);
         OnClickListener ImageViewClickListener04 = new OnClickListener() {
             public void onClick(View v) {
 //                InitiateDisplay("leftBottom");
@@ -182,7 +182,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                 clickedImageViewNumber = 4;
             }
         };
-        imageView04.setOnClickListener(ImageViewClickListener04);
+        transplantImageView04.setOnClickListener(ImageViewClickListener04);
 
 
         submitButton = (Button) findViewById(R.id.SubmitButton);
@@ -442,7 +442,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 //                    break;
                 case CROPPHOTO:
                     Bitmap bm = data.getParcelableExtra("data");
-                    imageView01.setImageBitmap(bm);
+                    transplantImageView01.setImageBitmap(bm);
                     break;
 
                 case TAKEPHOTO7:
@@ -470,13 +470,13 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                                     getContentResolver().openInputStream(Uri.fromFile(new File(cachPath))));
 
                             if (clickedImageViewNumber == 1) {
-                                imageView01.setImageBitmap(bitmap);
+                                transplantImageView01.setImageBitmap(bitmap);
                             } else if (clickedImageViewNumber == 2) {
-                                imageView02.setImageBitmap(bitmap);
+                                transplantImageView02.setImageBitmap(bitmap);
                             } else if (clickedImageViewNumber == 3) {
-                                imageView03.setImageBitmap(bitmap);
+                                transplantImageView03.setImageBitmap(bitmap);
                             } else if (clickedImageViewNumber == 4) {
-                                imageView04.setImageBitmap(bitmap);
+                                transplantImageView04.setImageBitmap(bitmap);
                             }
 
                         }

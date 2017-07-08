@@ -92,10 +92,10 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
     private File cacheFile;
     private String cachPath;
     final int TARGET_HEAD_SIZE = 150;
-    private ImageView imageView01;
-    private ImageView imageView02;
-    private ImageView imageView03;
-    private ImageView imageView04;
+    private ImageView disasterImageView01;
+    private ImageView disasterImageView02;
+    private ImageView disasterImageView03;
+    private ImageView disasterImageView04;
 
 
     @Override
@@ -105,10 +105,10 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
         setContentView(R.layout.activity_disaster);
         TextView mTitleView = (TextView) findViewById(R.id.title_text);
         mTitleView.setText("灾害上报");
-        imageView01 = (ImageView) findViewById(R.id.imageView01);
-        imageView02 = (ImageView) findViewById(R.id.imageView02);
-        imageView03 = (ImageView) findViewById(R.id.imageView03);
-        imageView04 = (ImageView) findViewById(R.id.imageView04);
+        disasterImageView01 = (ImageView) findViewById(R.id.disasterImageView01);
+        disasterImageView02 = (ImageView) findViewById(R.id.disasterImageView02);
+        disasterImageView03 = (ImageView) findViewById(R.id.disasterImageView03);
+        disasterImageView04 = (ImageView) findViewById(R.id.disasterImageView04);
         //        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
 //                1);
 //        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -149,7 +149,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                 StartCamara();
             }
         };
-        imageView01.setOnClickListener(ImageViewClickListener01);
+        disasterImageView01.setOnClickListener(ImageViewClickListener01);
 
         OnClickListener ImageViewClickListener02 = new OnClickListener() {
             public void onClick(View v) {
@@ -158,7 +158,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                 StartCamara();
             }
         };
-        imageView02.setOnClickListener(ImageViewClickListener02);
+        disasterImageView02.setOnClickListener(ImageViewClickListener02);
         OnClickListener ImageViewClickListener03 = new OnClickListener() {
             public void onClick(View v) {
 //                InitiateDisplay("leftBottom");
@@ -166,7 +166,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                 StartCamara();
             }
         };
-        imageView03.setOnClickListener(ImageViewClickListener03);
+        disasterImageView03.setOnClickListener(ImageViewClickListener03);
         OnClickListener ImageViewClickListener04 = new OnClickListener() {
             public void onClick(View v) {
 //                InitiateDisplay("leftBottom");
@@ -174,7 +174,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                 StartCamara();
             }
         };
-        imageView04.setOnClickListener(ImageViewClickListener04);
+        disasterImageView04.setOnClickListener(ImageViewClickListener04);
 
 
         submitButton = (Button) findViewById(R.id.SubmitButton);
@@ -434,7 +434,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
 //                    break;
                 case CROPPHOTO:
                     Bitmap bm = data.getParcelableExtra("data");
-                    imageView01.setImageBitmap(bm);
+                    disasterImageView01.setImageBitmap(bm);
                     break;
 
                 case TAKEPHOTO7:
@@ -460,7 +460,7 @@ public class DisasterActivity extends Activity implements OnItemClickListener {
                         if (resultCode == RESULT_OK) {
                             Bitmap bitmap = BitmapFactory.decodeStream(
                                     getContentResolver().openInputStream(Uri.fromFile(new File(cachPath))));
-                            imageView01.setImageBitmap(bitmap);
+                            disasterImageView01.setImageBitmap(bitmap);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
