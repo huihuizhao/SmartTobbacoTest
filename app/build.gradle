@@ -37,6 +37,11 @@ android {
             renderscriptDebuggable true
             minifyEnabled false
         }
+        sourceSets {
+            main {
+                jniLibs.srcDirs = ['libs']
+            }
+        }
     }
 }
 
@@ -59,5 +64,6 @@ dependencies {
     compile files('libs/client.jar')
     compile files('libs/pulltorefreshlistfragment.jar')
     compile files('libs/pulltorefreshviewpager.jar')
+
     compile files('libs/BaiduLBS_Android.jar')
 }

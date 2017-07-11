@@ -55,6 +55,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.Poi;
+
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -66,7 +73,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TransplantActivity extends Activity implements OnItemClickListener {
-    private TextView coordinatesTextView;
+//    private TextView coordinatesTextView;
     //    private ImageView imageButton;
     private int width;
     private int height;
@@ -103,47 +110,32 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
     private int clickedImageViewNumber = 1;
 
 
+    private LocationClient locationClient;
+    private TextView textViewTransplantCoordinates;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_transplant);
+
+//        locationClient=((MyApplication)getApplication()).locationClient;
+        locationClient= new LocationClient(this);
+        locationClient.registerLocationListener(locListener);
+
         TextView mTitleView = (TextView) findViewById(R.id.title_text);
         mTitleView.setText("移栽上报");
         transplantImageView01 = (ImageView) findViewById(R.id.transplantImageView01);
         transplantImageView02 = (ImageView) findViewById(R.id.transplantImageView02);
         transplantImageView03 = (ImageView) findViewById(R.id.transplantImageView03);
         transplantImageView04 = (ImageView) findViewById(R.id.transplantImageView04);
-        //        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                1);
-//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//
-
-//        int TAKE_PHOTO_REQUEST_CODE = 1;
-//        if (ContextCompat.checkSelfPermission(TransplantActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(TransplantActivity.this, new String[]{Manifest.permission.CAMERA}, TAKE_PHOTO_REQUEST_CODE);
-//        }
 
 
-        //判断是否开户相册权限
-//        if (PackageManager.PERMISSION_GRANTED ==   ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)) {
-//
-//            Camera.startCameraUrl(context, filename, CAMERA);
-//        }else{
-        //提示用户开户权限
-//        int RESULT_CODE_STARTCAMERA = 1;
-//        String[] perms = {"android.permission.CAMERA"};
-//        ActivityCompat.requestPermissions(TransplantActivity.this, perms, RESULT_CODE_STARTCAMERA);
-//        }
-
-
-//        TextView mTitleView = (TextView) findViewById(R.id.title_text);
-//        mTitleView.setText("种植");
-
-        coordinatesTextView = (TextView) findViewById(R.id.textViewCoordinates);
+        textViewTransplantCoordinates = (TextView) findViewById(R.id.textViewTransplantCoordinates);
 //		String coordinares = GetCoordinates();
-        String coordinares = "";
-        coordinatesTextView.setText(coordinares);
+        String coordinares = "0,0";
+        textViewTransplantCoordinates.setText(coordinares);
 
 
         OnClickListener ImageViewClickListener01 = new OnClickListener() {
@@ -271,7 +263,14 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         };
         submitButton.setOnClickListener(submitClickListener);
 
+        // send loc request
+        initLoctionOption();
+        locationClient.start();//默认发起1次请求
+
     }
+
+
+
 
     // 显示对话框
     private void showProgressDialog() {
@@ -815,5 +814,88 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                 true);
         return b;
     }
+
+
+    private BDLocationListener locListener=new BDLocationListener()
+    {
+        StringBuilder sb=new StringBuilder();
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            sb.append("当前时间 : ");
+            sb.append(location.getTime());
+
+            sb.append("\n定位类型 : ");
+            sb.append(location.getLocType());
+
+            sb.append("\n纬度 : ");
+            sb.append(location.getLatitude());
+            sb.append("\n精度 : ");
+            sb.append(location.getLongitude());
+            sb.append("\n定位半径 : ");
+            sb.append(location.getRadius());
+
+            if (location.getLocType() == BDLocation.TypeNetWorkLocation)
+            {
+                // 网络定位结果
+                sb.append("\n国 省 市 区.. : ");
+                sb.append(location.getAddrStr());
+                // 运营商信息
+                sb.append("\n网络定位结果 :");
+                sb.append("定位成功");
+            }
+            sb.append("\n简略地址信息 : ");
+            sb.append(location.getLocationDescribe());
+
+            List<Poi> list = location.getPoiList();// 附近信息
+            if (list != null)
+            {
+                sb.append("\npoilist size = : ");
+                sb.append(list.size());
+                for (Poi p : list)
+                {
+                    sb.append("\npoi= : ");
+                    sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
+                }
+            }
+            Log.i("result:",sb.toString());
+//            result.setText(sb.toString());
+
+            textViewTransplantCoordinates.setText(location.getLongitude() +", "+location.getLatitude());
+        }
+
+        public void onConnectHotSpotMessage(String s, int i){
+        }
+
+    };
+
+
+    public void click(View v)
+    {
+        // send loc request
+        initLoctionOption();
+        locationClient.start();//默认发起1次请求
+
+    }
+
+    private void initLoctionOption()
+    {
+        LocationClientOption locOption=new LocationClientOption();
+        //net loc
+        locOption.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
+        locOption.setCoorType("gcj02");// 定位结果坐标系
+        locOption.setScanSpan(0);//定位请求的时间间隔，定位一次
+        locOption.setIsNeedAddress(true);//设置是否需要地址信息
+        locOption.setIsNeedLocationDescribe(true);//简单位置描述
+        locOption.setIsNeedLocationPoiList(true);
+        locOption.setIgnoreKillProcess(true);
+        locationClient.setLocOption(locOption);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        locationClient.stop();
+    }
+
+
 
 }
