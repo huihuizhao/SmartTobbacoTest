@@ -17,7 +17,8 @@
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" >
 
             <TextView
                 android:id="@+id/textView1"
@@ -29,7 +30,7 @@
             <EditText
                 android:id="@+id/editText1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_weight="1"
                 android:background="@drawable/edittext_search"
                 android:ems="10"
@@ -40,7 +41,8 @@
         <LinearLayout
             android:id="@+id/LinearLayout01"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" >
 
             <TextView
                 android:id="@+id/TextView01"
@@ -52,7 +54,7 @@
             <EditText
                 android:id="@+id/EditText01"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:background="@drawable/edittext_search"
                 android:ems="10"
                 android:paddingLeft="10dp" />
@@ -61,7 +63,8 @@
         <LinearLayout
             android:id="@+id/LinearLayout02"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" >
 
             <TextView
                 android:id="@+id/TextView02"
@@ -73,7 +76,7 @@
             <EditText
                 android:id="@+id/EditText02"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:background="@drawable/edittext_search"
                 android:ems="10"
                 android:enabled="true"
@@ -84,7 +87,7 @@
             android:id="@+id/LinearLayout03"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp" >
+            android:layout_marginTop="12dp" >
 
             <TextView
                 android:id="@+id/TextView04"
@@ -97,12 +100,22 @@
             <TextView
                 android:id="@+id/textViewTransplantCoordinates"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:background="@drawable/edittext_search"
                 android:paddingLeft="10dp"
                 android:paddingTop="12dp"
                 android:textSize="18dp" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
+
     </LinearLayout>
 
     <TextView
@@ -111,7 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="12dp"
         android:text="照        片："
         android:textSize="18dp" />
 
