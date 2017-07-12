@@ -12,47 +12,46 @@
         android:layout_gravity="top"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" >
+            android:layout_marginTop="12dp">
 
             <TextView
                 android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="烟田编号："
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/editText1"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_weight="1"
-                android:background="@drawable/edittext_search"
-                android:ems="10"
-                android:paddingLeft="10dp" >
-            </EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LinearLayout01"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" >
-
-            <TextView
-                android:id="@+id/TextView01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="移栽株数："
                 android:textSize="18dp" />
 
             <EditText
-                android:id="@+id/EditText01"
+                android:id="@+id/transplantEditTextCount"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="@drawable/edittext_search"
+                android:ems="10"
+                android:paddingLeft="10dp"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="移栽面积："
+                android:textSize="18dp" />
+
+            <EditText
+                android:id="@+id/transplantEditTextArea"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:background="@drawable/edittext_search"
@@ -64,7 +63,7 @@
             android:id="@+id/LinearLayout02"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" >
+            android:layout_marginTop="12dp">
 
             <TextView
                 android:id="@+id/TextView02"
@@ -74,7 +73,7 @@
                 android:textSize="18dp" />
 
             <EditText
-                android:id="@+id/EditText02"
+                android:id="@+id/transplantEditTextVariety"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:background="@drawable/edittext_search"
@@ -87,7 +86,7 @@
             android:id="@+id/LinearLayout03"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" >
+            android:layout_marginTop="12dp">
 
             <TextView
                 android:id="@+id/TextView04"

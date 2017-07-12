@@ -46,6 +46,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -110,6 +111,10 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
     private LocationClient locationClient;
     private TextView textViewTransplantCoordinates;
 
+    private EditText transplantEditTextCount;
+    private EditText transplantEditTextArea;
+    private EditText transplantEditTextVariety;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,10 +133,13 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         transplantImageView03 = (ImageView) findViewById(R.id.transplantImageView03);
         transplantImageView04 = (ImageView) findViewById(R.id.transplantImageView04);
 
+        transplantEditTextCount = (EditText) findViewById(R.id.transplantEditTextCount);
+        transplantEditTextArea = (EditText) findViewById(R.id.transplantEditTextArea);
+        transplantEditTextVariety = (EditText) findViewById(R.id.transplantEditTextVariety);
 
         textViewTransplantCoordinates = (TextView) findViewById(R.id.textViewTransplantCoordinates);
 //		String coordinares = GetCoordinates();
-        String coordinares = "0, 0";
+        String coordinares = "正在获取当前坐标...";
         textViewTransplantCoordinates.setText(coordinares);
 
 
@@ -229,17 +237,25 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 
 
                             String ID = "1";
-                            String area = "10";
+
                             String count = "10";
-                            String longitude = "10";
-                            String latitude = "10";
+                            String area = "10";
+                            String variety = "10";
+                            String longitude = "";
+                            String latitude = "";
                             String date = "10";
                             String fieldID = "10";
-                            String town = "10";
-                            String picturePath = "10";
+                            String town = "西三镇10";
+                            String picturePath = "1388888888820170516163216.jpg";
+
+                            count = transplantEditTextCount.getText().toString();
+                            area = transplantEditTextArea.getText().toString();
+                            variety = transplantEditTextVariety.getText().toString();
+                            longitude = textViewTransplantCoordinates.getText().toString().split(", ")[0];
+                            latitude = textViewTransplantCoordinates.getText().toString().split(", ")[1];
 
                             // 上传数据库表格字段信息
-                            InsertToDatabaseService(ID, area, count, longitude, latitude, date, fieldID, town, picturePath);
+                            InsertToDatabaseService(count, area, variety, longitude, latitude, date, fieldID, town, picturePath);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -291,7 +307,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
      * @param userName
      * @param password
      */
-    public void InsertToDatabaseService(String ID, String area, String count,
+    public void InsertToDatabaseService(String count, String area, String variety,
                                         String longitude, String latitude, String date, String fieldID, String town, String picturePath) {
         // public void loginRemoteService(String userName, String password) {
         String result = null;
@@ -303,7 +319,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
             // 远程登录URL
             // 下面这句是原有的
             // processURL=processURL+"userName="+userName+"&password="+password;
-            urlParameters = url_constant_parameters + "ID=" + ID + "area=" + area + "&count=" + count + "&longitude=" + longitude
+            urlParameters = url_constant_parameters + "count=" + count + "&area=" + area + "&variety=" + variety + "&longitude=" + longitude
                     + "&latitude=" + latitude + "&date=" + date + "&fieldID=" + fieldID + "&town=" + town + "&picturePath=" + picturePath;
             Log.d("远程URL", urlParameters);
             // 创建HttpGet对象
