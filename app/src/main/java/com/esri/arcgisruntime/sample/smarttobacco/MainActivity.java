@@ -3,31 +3,14 @@ package com.esri.arcgisruntime.sample.smarttobacco;
 import android.Manifest;
 import android.os.Bundle;
 
-//public class MainActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//    }
-//}
-
 
 import java.util.ArrayList;
 
-//        import R;
-
-//        import fragment.HuodongFragment;
-//        import fragment.JingXuanFragment;
-//        import fragment.KnowledgeFragment;
-//        import fragment.LoginFragment;
 import fragment.HomeFragment;
 import fragment.LoginFragment;
 import fragment.MapFragment;
 import fragment.TechFragment;
-//import fragment.DictFragment;
-//        import fragment.ZhuanTiFragment;
-//        import com.zdp.aseo.content.AseoZdpAseo;
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -47,13 +30,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.BDNotifyListener;//假如用到位置提醒功能，需要import该类
-import com.baidu.location.Poi;
-
 /**
  * @author 赵辉辉
  * @version 1.0
@@ -72,11 +48,6 @@ public class MainActivity extends FragmentActivity implements
     private TechFragment techFragment;
     private LoginFragment loginFragment;
 
-    //	private HuodongFragment huodongFragment;
-//    private KnowledgeFragment knowledgeFragment;
-    //	private ZhuanTiFragment zhuanTiFragment;
-//    private DisasterFragment00 disasterFragment;
-//    private LoginFragment loginFragment;
     private ArrayList<Fragment> fragments;
     private RadioGroup group;
     private RadioButton imageView;
@@ -91,21 +62,6 @@ public class MainActivity extends FragmentActivity implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initViews();
-
-//        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                1);
-//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//        AseoZdpAseo.initTimer(this);
-        //判断是否开户相册权限
-//        if (PackageManager.PERMISSION_GRANTED ==   ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)) {
-//
-//            Camera.startCameraUrl(context, filename, CAMERA);
-//        }else{
-        //提示用户开户权限
-//        int RESULT_CODE_STARTCAMERA = 1;
-//        String[] perms = {"android.permission.CAMERA"};
-//        ActivityCompat.requestPermissions(MainActivity.this, perms, RESULT_CODE_STARTCAMERA);
-//        }
 
 
         group = (RadioGroup) findViewById(R.id.main_tab_bar);
@@ -134,7 +90,7 @@ public class MainActivity extends FragmentActivity implements
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.main_framelayout, fragments.get(0));
             transaction.commit();
-            title.setText("种植");
+            title.setText("智慧烟草");
         }
 
 

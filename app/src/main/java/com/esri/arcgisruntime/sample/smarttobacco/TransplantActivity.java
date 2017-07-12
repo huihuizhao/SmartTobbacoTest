@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-//import com.yuhj.ontheway.R;
-
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -25,7 +23,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.DocumentsContract;
@@ -262,6 +259,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 
         };
         submitButton.setOnClickListener(submitClickListener);
+
 
         // send loc request
         initLoctionOption();
@@ -819,7 +817,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-
+            final BDLocation location2 = location;
 //            //获取定位结果
 //            StringBuffer sb = new StringBuffer(256);
 //
@@ -909,10 +907,22 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 //
 //            Log.i("BaiduLocationApiDem", sb.toString());
 
-            String coordinateInfo = location.getLongitude() + ", " + location.getLatitude();
-            if (coordinateInfo.length() > 10) {
-                textViewTransplantCoordinates.setText(location.getLongitude() + ", " + location.getLatitude());
-            }
+            //新开一个线程，修改UI界面上的值
+            Thread threadRefreshUIValue = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String coordinateInfo = location2.getLongitude() + ", " + location2.getLatitude();
+                        if (coordinateInfo.length() > 10) {
+                            textViewTransplantCoordinates.setText(location2.getLongitude() + ", " + location2.getLatitude());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            threadRefreshUIValue.start();
 
 
         }
@@ -935,10 +945,10 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
         //net loc
         locOption.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
         locOption.setCoorType("gcj02");// 定位结果坐标系
-        locOption.setScanSpan(0);//定位请求的时间间隔，定位一次
-        locOption.setIsNeedAddress(true);//设置是否需要地址信息
-        locOption.setIsNeedLocationDescribe(true);//简单位置描述
-        locOption.setIsNeedLocationPoiList(true);
+        locOption.setScanSpan(100);//定位请求的时间间隔，定位一次
+        locOption.setIsNeedAddress(false);//设置是否需要地址信息
+        locOption.setIsNeedLocationDescribe(false);//简单位置描述
+        locOption.setIsNeedLocationPoiList(false);
         locOption.setIgnoreKillProcess(true);
         locationClient.setLocOption(locOption);
     }
@@ -947,6 +957,15 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
     protected void onStop() {
         super.onStop();
         locationClient.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        // 退出时销毁定位
+        locationClient.stop();
+
+        super.onDestroy();
     }
 
 
