@@ -3,6 +3,7 @@ package com.esri.arcgisruntime.sample.smarttobacco;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -253,6 +254,8 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                             variety = transplantEditTextVariety.getText().toString();
                             longitude = textViewTransplantCoordinates.getText().toString().split(", ")[0];
                             latitude = textViewTransplantCoordinates.getText().toString().split(", ")[1];
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            date = dateFormat.format(new java.util.Date());
 
                             // 上传数据库表格字段信息
                             InsertToDatabaseService(count, area, variety, longitude, latitude, date, fieldID, town, picturePath);
