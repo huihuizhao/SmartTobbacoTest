@@ -140,7 +140,8 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 
         textViewTransplantCoordinates = (TextView) findViewById(R.id.textViewTransplantCoordinates);
 //		String coordinares = GetCoordinates();
-        String coordinares = "正在获取当前坐标...";
+//        String coordinares = "正在获取当前坐标...";
+        String coordinares = "0, 0";
         textViewTransplantCoordinates.setText(coordinares);
 
 
@@ -237,6 +238,10 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 //                            UploadUtil.uploadFile(file4, "http://pic.giscloud.ac.cn");
 
 
+                            File fileVideo = new File(cachPath);
+                            HttpUtil.uploadFile(fileVideo, uploadServerUrl);
+
+
                             String ID = "1";
 
                             String count = "10";
@@ -246,7 +251,7 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
                             String latitude = "";
                             String date = "10";
                             String fieldID = "10";
-                            String town = "西三镇10";
+                            String town = "西三镇";
                             String picturePath = "1388888888820170516163216.jpg";
 
                             count = transplantEditTextCount.getText().toString();
@@ -259,6 +264,10 @@ public class TransplantActivity extends Activity implements OnItemClickListener 
 
                             // 上传数据库表格字段信息
                             InsertToDatabaseService(count, area, variety, longitude, latitude, date, fieldID, town, picturePath);
+
+
+
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
